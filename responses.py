@@ -4,6 +4,9 @@ def handle_response(message) -> str:
     if p_message == 'hello':
         return "Hey there!"
     
+    if p_message == 'burak':
+        return 'ananskim'
+    
     
     # if p_message == 'eyv':
     #     return "Hadi eyv 👋🏻"
