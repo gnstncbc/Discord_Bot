@@ -1,5 +1,5 @@
-def handle_response(message) -> str:
-    p_message = message.lower()
+def handle_response(user_message, self) -> str:
+    p_message = user_message.lower()
 
     if p_message == 'hello':
         return "Hey there!"
@@ -7,24 +7,11 @@ def handle_response(message) -> str:
     if p_message == 'burak':
         return 'ananskim'
     
+    if p_message == 'sorgu':
+        self.send_trendyol_fiyat.start()
+
+    if p_message == 'sorgu bitir':
+        self.send_trendyol_fiyat.cancel()
     
-    # if p_message == 'eyv':
-    #     return "Hadi eyv 👋🏻"
-    
-    # if p_message == 'emrah gey mi':
-    #     return "evet"
-    
-    # if p_message == 'ilayın iqsu kaç':
-    #     return "3"
-    
-#    match p_message:
-#        case "hello":
-#            return "Hey there!"
-#       case "eyv":
-#            return "Hadi eyv 👋🏻"
-#        case "emrah gey mi":
-#            return "evet"
-#        case "onemli_kisiler_flag":
-#            return "önemli birinden bahsediyorsun."
-#        case _:
-#            return "bilmiyommmm"
+    if p_message == 'logs':
+        self.send_logs.start()

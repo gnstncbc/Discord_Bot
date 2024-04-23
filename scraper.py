@@ -2,9 +2,11 @@
 
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
+import config
 
 async def scrape_trendyol():
-    url = 'https://www.trendyol.com/sr?q=Tuberose%203%27l%C3%BC%20Kokulu%20Kese%20%C5%9Eeffaf&qt=Tuberose%203%27l%C3%BC%20Kokulu%20Kese%20%C5%9Eeffaf&st=Tuberose%203%27l%C3%BC%20Kokulu%20Kese%20%C5%9Eeffaf&os=1'
+    url = config.Config.TRENDYOL_URL
 
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -12,7 +14,7 @@ async def scrape_trendyol():
     price_elements = soup.find_all('div', class_='prc-box-dscntd')
     name_elements = soup.find_all('div', class_='prdct-desc-cntnr')
 
-    new_data = []
+    data = []
     if len(price_elements) == len(name_elements):
         for price_element, name_element in zip(price_elements, name_elements):
             price = price_element.text.strip()
@@ -20,5 +22,7 @@ async def scrape_trendyol():
             if len(spans) >= 2:
                 brand = spans[0].text.strip()
                 product_name = spans[1].text.strip()
-                new_data.append((product_name, brand, price))
-    return new_data
+                data.append({'Product': product_name, 'Brand': brand, 'Price': price})
+
+    df = pd.DataFrame(data)
+    return df
