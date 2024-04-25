@@ -15,3 +15,18 @@ def handle_response(user_message, self) -> str:
     
     if p_message == 'logs':
         self.send_logs.start()
+
+    if p_message == 'kosmos':
+        self.kosmos_get_max_date.start()
+
+    if p_message == 'kosmos job start':
+        self.kosmos_get_max_date_job.start()
+
+    if p_message == 'kosmos job cancel':
+        self.kosmos_get_max_date_job.cancel()
+
+    if p_message == 'kosmos logs':
+        self.send_kosmos_logs.start()
+
+    if p_message == 'eyv':
+        SystemExit

@@ -5,7 +5,7 @@ import commands as cmd
 import scraper
 import logger
 import beautifier
-import price_checker
+import checker
 
 class MyBot(commands.Bot):
     def __init__(self):
@@ -16,7 +16,6 @@ class MyBot(commands.Bot):
 
     async def on_ready(self):
         print(f'{self.user} is now running!')
-        self.send_trendyol_fiyat.start()
 
     async def on_message(self, message):
         if message.author == self.user:
@@ -40,16 +39,47 @@ class MyBot(commands.Bot):
 
         if len(logs) < 2:
             print("logs is empty, probably first call")
-            logs.at[0, 'Price'] = '44 TL'
             await beautifier.trendyol_beautify_and_send(data,channel,change_detected)
         else:
-            changed_rows_df = await price_checker.check_price(data,logs)
+            changed_rows_df = await checker.check_price(data,logs)
             
             if changed_rows_df.empty:
                 print("No changes detected.")
             else:
                 change_detected = True
                 await beautifier.trendyol_beautify_and_send(changed_rows_df,channel,change_detected)
+    
+    @tasks.loop(seconds=1.0, count = 1)
+    async def kosmos_get_max_date(self):
+        channel = self.get_channel(self.channel_id)
+        data = await scraper.scrape_kosmos_max_date()
+        await logger.log_data_kosmos(data)
+        await beautifier.kosmos_beautify_and_send(data,channel)
+        
+    @tasks.loop(seconds=1.0, count = 1)
+    async def send_kosmos_logs(self):
+        channel = self.get_channel(self.channel_id)
+        logs = await logger.return_kosmos_logs()
+        await beautifier.kosmos_log_beautify_and_send(logs,channel)
+
+    @tasks.loop(minutes = 60.0)
+    async def kosmos_get_max_date_job(self):
+        channel = self.get_channel(self.channel_id)
+        data = await scraper.scrape_kosmos_max_date()
+
+        await logger.log_data_kosmos(data)
+        logs = await logger.return_kosmos_logs()
+
+        if len(logs) < 2:
+            print("logs is empty, probably first call")
+            #logs.at[0, 'Name'] = '1997-09-14'
+        else:
+            changed_rows_df = await checker.check_kosmos_max_date(data, logs)
+            if changed_rows_df.empty:
+                print("No changes detected on kosmos.")
+            else:
+                change_detected = True
+                await beautifier.kosmos_beautify_and_send(changed_rows_df,channel,change_detected)
 
 bot = MyBot()
 bot.run(config.Config.TOKEN)

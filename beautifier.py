@@ -31,3 +31,43 @@ async def trendyol_beautify_and_send(data, channel, change_detected):
     url = config.Config.TRENDYOL_URL
     message_link = "URL: [Arama Linki](" + url + ")"
     await channel.send(message_link)
+
+
+async def kosmos_log_beautify_and_send(logs, channel):
+    
+    for index, row in logs.iterrows():
+        id = row['ID']
+        name = row['Name']
+        code = row['Code']
+        foreign_code = row['Foreign Code']
+        description = row['Description']
+        foreign_name = row['Foreign Name']
+        data_type = row['Data Type']
+        datetime = row['Datetime']
+        message_to_send = "Maksimum randevu alınabilecek tarih : " + str(name) + "\n" "Sorgu Zamanı : " + datetime + "\n----------------"
+        await channel.send(message_to_send)
+
+    message_to_send = "**Toplam sorgu sayısı: " + str(len(logs)) + "**"
+    await channel.send(message_to_send)
+
+
+async def kosmos_beautify_and_send(logs, channel, change_detected):
+    
+    for index, row in logs.iterrows():
+        id = row['ID']
+        name = row['Name']
+        code = row['Code']
+        foreign_code = row['Foreign Code']
+        description = row['Description']
+        foreign_name = row['Foreign Name']
+        data_type = row['Data Type']
+
+
+        if change_detected == True:
+            message_to_send = "**Kosmos Tarih Değişti!**"
+            await channel.send(message_to_send)
+            message_to_send = "Maksimum randevu alınabilecek yeni tarih : " + str(name) 
+            await channel.send(message_to_send)
+        else:
+            message_to_send = "Maksimum randevu alınabilecek tarih : " + str(name) 
+            await channel.send(message_to_send)
