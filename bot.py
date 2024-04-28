@@ -1,5 +1,6 @@
 import discord
 from discord.ext import tasks, commands
+
 import config
 import commands as cmd
 import scraper
@@ -38,7 +39,7 @@ class MyBot(commands.Bot):
         logs = await logger.return_logs()
 
         if len(logs) < 2:
-            print("logs is empty, probably first call")
+            print("logs has one entry, probably first call")
             await beautifier.trendyol_beautify_and_send(data,channel,change_detected)
         else:
             changed_rows_df = await checker.check_price(data,logs)
