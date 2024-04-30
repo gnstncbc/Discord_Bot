@@ -35,6 +35,10 @@ async def scrape_kosmos_max_date():
     df_kosmos = pd.DataFrame(columns=['ID', 'Name', 'Code', 'Foreign Code', 'Description', 'Foreign Name', 'Data Type'])
 
     response = requests.get(url)
+    data = []
+    print("response status code geliyor")
+    print(response.status_code)
+    print("response status code gidiyor")
     if response.status_code == 200:
         json_data = response.json()
         for item in json_data:
@@ -47,7 +51,10 @@ async def scrape_kosmos_max_date():
             foreign_name = item.get('foreignName')
             data_type = item.get('dataType')
 
-            df_kosmos = df_kosmos.append({'ID': id, 'Name': name, 'Code': code, 'Foreign Code': foreign_code, 
-                                          'Description': description, 'Foreign Name': foreign_name, 'Data Type': data_type}, 
-                                           ignore_index=True)
+            data.append({'ID': id, 'Name': name, 'Code': code, 'Foreign Code': foreign_code, 
+                                          'Description': description, 'Foreign Name': foreign_name, 'Data Type': data_type})
+           # df_kosmos = df_kosmos.append({'ID': id, 'Name': name, 'Code': code, 'Foreign Code': foreign_code, 
+           #                               'Description': description, 'Foreign Name': foreign_name, 'Data Type': data_type}, 
+           #                                ignore_index=True)
+        df_kosmos = pd.concat([df_kosmos, pd.DataFrame(data)], ignore_index=True)
         return df_kosmos

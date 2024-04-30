@@ -14,9 +14,10 @@ async def log_data(data, channel):
 
     # Add the formatted_local_datetime column to the data DataFrame
     data['Datetime'] = formatted_local_datetime
+    print(formatted_local_datetime)
 
     # Append the new data to the global DataFrame
-    df_logs = df_logs.append(data, ignore_index=True)
+    df_logs = pd.concat([df_logs, pd.DataFrame(data)], ignore_index=True)
 
 async def return_logs():
     return df_logs
@@ -27,8 +28,11 @@ async def log_data_kosmos(data):
     formatted_local_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     # Add the formatted_local_datetime column to the data DataFrame
     data['Datetime'] = formatted_local_datetime
+    print("local_date_time geliyor")
+    print(formatted_local_datetime)
+    print("local_date_time gidiyor")
 
-    df_logs_kosmos = df_logs_kosmos.append(data, ignore_index=True)
+    df_logs_kosmos = pd.concat([df_logs_kosmos, pd.DataFrame(data)], ignore_index=True)
 
 async def return_kosmos_logs():
     return df_logs_kosmos

@@ -52,10 +52,19 @@ class MyBot(commands.Bot):
     
     @tasks.loop(seconds=1.0, count = 1)
     async def kosmos_get_max_date(self):
+        change_detected = ''
         channel = self.get_channel(self.channel_id)
         data = await scraper.scrape_kosmos_max_date()
-        await logger.log_data_kosmos(data)
-        await beautifier.kosmos_beautify_and_send(data,channel)
+        if data is None:
+            print("scraper failed, data is empty")
+            try:
+                response = "olmadı yav"
+                await channel.send(response)
+            except Exception as e:
+                print(e)
+        else:
+            await logger.log_data_kosmos(data)
+            await beautifier.kosmos_beautify_and_send(data,channel,change_detected)
         
     @tasks.loop(seconds=1.0, count = 1)
     async def send_kosmos_logs(self):
