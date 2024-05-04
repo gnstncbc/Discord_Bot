@@ -1,4 +1,5 @@
 def handle_response(user_message, self) -> str:
+
     p_message = user_message.lower()
 
     if p_message == 'hello':
@@ -27,6 +28,9 @@ def handle_response(user_message, self) -> str:
 
     if p_message == 'kosmos logs':
         self.send_kosmos_logs.start()
+    
+    if p_message == 'help':
+        self.help.start()
 
     if p_message == 'eyv':
         SystemExit

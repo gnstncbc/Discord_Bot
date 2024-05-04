@@ -1,5 +1,5 @@
-import discord
-from discord.ext import tasks, commands
+import discord # type: ignore
+from discord.ext import tasks, commands # type: ignore
 
 import config
 import commands as cmd
@@ -7,13 +7,14 @@ import scraper
 import logger
 import beautifier
 import checker
+import help
 
 class MyBot(commands.Bot):
     def __init__(self):
         intents = discord.Intents.default()
         intents.message_content = True
         super().__init__(command_prefix='?', intents=intents)
-        self.channel_id = config.Config.CHANNEL_ID
+        self.channel_id = config.Config.CHANNEL_ID2
 
     async def on_ready(self):
         print(f'{self.user} is now running!')
@@ -90,6 +91,18 @@ class MyBot(commands.Bot):
             else:
                 change_detected = True
                 await beautifier.kosmos_beautify_and_send(changed_rows_df,channel,change_detected)
+
+    @tasks.loop(seconds=1.0, count = 1)
+    async def help(self):
+        channel = self.get_channel(self.channel_id)
+        help_list = help.return_help_list()
+        for key, value in help_list.items():
+            message_to_send = "**" + key + "** -> " + value
+            await channel.send(message_to_send)
+        message_to_send = '----------------'
+        await channel.send(message_to_send)
+        message_to_send = 'şimdilik bu kadar.'
+        await channel.send(message_to_send)
 
 bot = MyBot()
 bot.run(config.Config.TOKEN)
