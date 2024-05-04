@@ -8,7 +8,9 @@ def return_help_list():
     "logs": "Trendyol loglarını döker.",
     "kosmos": "Kosmos'dan anlık maksimum randevu alınabilecek tarihi döner.",
     "kosmos job start": "Kosmos'dan anlık maksimum randevu alınabilecek tarihi kontrol eden taskı başlatır. Saatte bir çalışır.",
-    "kosmos job cancel": "Kosmos'dan anlık maksimum randevu alınabilecek tarihi kontrol eden taskı bitirir."
+    "kosmos job cancel": "Kosmos'dan anlık maksimum randevu alınabilecek tarihi kontrol eden taskı bitirir.",
+    "kosmos logs": "Kosmos'a atılan sorguların loglarını döker.",
+    "help": "Kullanılabilecek özelliklerin listesini döner."
     }
 
     return help_list
