@@ -31,7 +31,7 @@ async def scrape_trendyol():
 
 
 async def scrape_kosmos_max_date():
-    url = config.Config.KOSMOS_MAX_DATE
+    url = config.Config.TRENDYOL_URL
     df_kosmos = pd.DataFrame(columns=['ID', 'Name', 'Code', 'Foreign Code', 'Description', 'Foreign Name', 'Data Type'])
 
     response = requests.get(url)
